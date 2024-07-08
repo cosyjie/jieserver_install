@@ -79,6 +79,10 @@ firewall-cmd --reload
 
 
 IP=$(hostname -I | awk -F " " '{printf $1}')
+
+cd /opt/jieserver/jieadminpanel/
+python manage.py runserver $IP:8000
+
 echo "请访问 http://$IP:8000 来启动系统"
 
 exec "$SHELL"
