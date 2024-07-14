@@ -65,6 +65,7 @@ mv /opt/jieserver/install/Python-3.11.9.tar.xz /opt/jieserver/pyenv/cache/
 /opt/jieserver/pyenv/versions/jieadminpanel3119/bin/pip install psutil
 /opt/jieserver/pyenv/versions/jieadminpanel3119/bin/pip install requests
 /opt/jieserver/pyenv/versions/jieadminpanel3119/bin/pip install cryptography
+/opt/jieserver/pyenv/versions/jieadminpanel3119/bin/pip install gunicorn
 
 /opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py makemigrations
 /opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py migrate
@@ -72,16 +73,20 @@ mv /opt/jieserver/install/Python-3.11.9.tar.xz /opt/jieserver/pyenv/cache/
 firewall-cmd --add-port=8000/tcp --permanent
 firewall-cmd --reload
 
-/opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py encryptionkey
-/opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py createadmin
-
 /opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py loaddata /opt/jieserver/install/appstore_appsinfo.json
 
+cp -f /opt/jieserver/install/jieadminserver.service /etc/systemd/system/
+
+systemctl enable jieadminserver.service
+systemctl start jieadminserver.service
 
 IP=$(hostname -I | awk -F " " '{printf $1}')
 
-cd /opt/jieserver/jieadminpanel/
-python manage.py runserver $IP:8000
+# cd /opt/jieserver/jieadminpanel/
+# python manage.py runserver $IP:8000
+
+/opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py encryptionkey
+/opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py createadmin
 
 echo "请访问 http://$IP:8000 来启动系统"
 
