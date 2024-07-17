@@ -82,6 +82,7 @@ systemctl enable jieadminserver.service
 systemctl start jieadminserver.service
 
 /opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py encryptionkey
+/opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py secretkey
 /opt/jieserver/pyenv/versions/jieadminpanel3119/bin/python /opt/jieserver/jieadminpanel/manage.py createadmin
 
 IP=$(hostname -I | awk -F " " '{printf $1}')
